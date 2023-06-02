@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>gitern account</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="shortcut icon" type="image/x-icon" href="/public/gitern_knot.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168219183-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-168219183-1');
+    </script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+        @media screen {
+            html,
+            body {
+                height: 100vh;
+            }
+        }
+        body {
+            font-family: monospace;
+            word-break: break-word;
+        }
+        section {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .desc {
+            background: #43B3AE;
+            padding: 2rem 1rem;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .desc img {
+            margin: 0 1rem;
+            height: 60px;
+            width: 60px;
+        }
+        .desc h3 {
+            margin: 0 1rem;
+            font-weight: normal;
+        }
+        #justice {
+            border-radius: 10px;
+            background: #700e41;
+            color: white;
+            display: block;
+            padding: 5rem 1rem 7rem 1rem;
+            z-index: 2;
+            position: relative;
+        }
+        .howto-and-card {
+            flex-direction: row;
+            justify-content: space-around;
+            flex: 1;
+            flex-wrap: wrap;
+            margin: 4rem 0rem;
+        }
+        .MyCardElement {
+            height: 40px;
+            padding: 10px 12px;
+            border-radius: 4px;
+            color: #32325d;
+            background-color: white;
+        }
+        .MyCardElement--focus {
+            box-shadow: 0 1px 3px 0 #cfd7df;
+        }
+        .MyCardElement--invalid {
+            border-color: #fa755a;
+        }
+        .MyCardElement--webkit-autofill {
+            background-color: #fefde5 !important;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .container form {
+            padding-top: 2rem;
+        }
+        #justice button {
+            width: 100%;
+            padding: .5rem;
+            margin-top: 1rem;
+            height: 60px;
+            border-color: transparent;
+            border-radius: 4px;
+        }
+
+        #payment-form button {
+            background: #FADA5E;
+        }
+        #manage-form button {
+            background: #c9bfb9;
+        }
+        .hidden {
+            display: none;
+        }
+        .text-center {
+            text-align: center;
+        }
+        input, textarea, select, button { 
+            font-family:inherit; 
+        }
+        .footer img {
+            max-width:75px;
+            max-height:75px;
+            margin: 0 1rem;
+        }
+        .footer {
+            top: -10px;
+            padding: 5rem 1rem 3rem 1rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            position: relative;
+            background: #FADA5E;
+            word-break: keep-all;
+            align-items: center;
+            z-index: 1;
+        }
+        .footer > div {
+            margin: 0 1rem;
+        }
+        .footer > h3 {
+            font-weight: normal;
+            margin: 0 1rem;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px; /* Remove this if you don't want the 3D effect */
+        }
+
+        .flip-card img {
+            width: 240px;
+            height: 399px;
+        }
+
+        /* This container is needed to position the front and back side */
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        /* Do an horizontal flip when you move the mouse over the flip box container */
+        .flip-card:hover .flip-card-inner, .flip-card:active .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Position the front and back side */
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+        }
+
+        /* Style the front side (fallback if image is missing) */
+        .flip-card-front {
+            position: relative;
+            color: black;
+        }
+
+        /* Style the back side */
+        .flip-card-back {
+            position: absolute;
+            top: 0;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .font-weight-normal {
+            font-weight: normal;
+        }
+
+        #card-element-errors {
+            margin-top: .5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="desc">
+        <h3>Muh lord, thou administer the gitern account directory <strong>{{.accname}}</strong> with pubkey <strong>SHA256:{{.fp}}</strong></h3>
+        <img src="/public/gitern_knot.png">
+    </section>
+    <section class="howto-and-card">
+        <div class="howto">
+            <h3 class="text-center">How to use gitern</h3>
+            <ol>
+                <li>Download a Gitern CLI
+                    <ul>
+                        <li>Main CLI (recommended)
+                        <ul>
+                            <li>Installers
+                            <ul>
+                                <li><a href="https://files.gitern.com/gitern.pkg">macOS</a></li>
+                                <li><a href="https://files.gitern.com/gitern-x64.exe">Windows 64-bit</a></li>
+                                <li><a href="https://files.gitern.com/gitern-x86.exe">Windows 32-bit</a></li>
+                            </ul>
+                            </li>
+
+                            <li>Tarballs
+                            <ul>
+                                <li><a href="https://files.gitern.com/gitern-darwin-x64.tar.gz">macOS</a></li>
+                                <li><a href="https://files.gitern.com/gitern-linux-x64.tar.gz">linux x64</a></li>
+                                <li><a href="https://files.gitern.com/gitern-linux-arm.tar.gz">linux arm</a></li>
+                                <li><a href="https://files.gitern.com/gitern-x64.exe">Windows 64-bit</a></li>
+                                <li><a href="https://files.gitern.com/gitern-x86.exe">Windows 32-bit</a></li>
+                            </ul>
+                            </li>
+                        </ul>
+                        </li>
+                        <li>Shell script CLI
+                        <ul>
+                            <li><a href="https://files.gitern.com/gitern">POSIX shell</a></li>
+                        </ul>
+                        </li>
+                        <li>E2E encryption remote helper
+                        <ul>
+                            <li><a href="https://github.com/huumn/git-remote-gitern">git-remote-gitern</a></li>
+                        </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>Run 'gitern help' for usage</li>
+                <li>Verify the gitern.com host key fingerprint when connecting:
+                    <ul>
+                        <li>SHA256:yLo6gsPFiwqJt9fFlaDY46XH9jdu79RYqCmNFza4ohc (RSA)</li>
+                        <li>SHA256:T/iWDAVmMhzVltXgTQHDJsJU466bSLkyeOVc16i642E (DSA)</li>
+                        <li>SHA256:/MccDAYBTGIvIJizQDQfHqA3jVjug4WWxoZuNNi8OK8 (ECDSA)</li>
+                        <li>SHA256:MEscLQrRa8r+GTNu3rQYgTCqaMEDiZPsgq0AQw0+wkQ (ED25519)</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+        <div class="card">
+            <h4 class="text-center">view this page</h4>
+            <div class="flip-card image-parent">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                <img src="/public/account.png" alt="gitern account">
+                </div>
+                <div class="flip-card-back">
+                <img src="/public/account_back.png" alt="gitern account ssh api">
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+    <section id="justice">
+        <div class="container paid {{if not .StripeStatus}}hidden{{end}}">
+            {{if or (eq .StripeStatus "paid") (not .StripeStatus)}}
+                <h2 class="text-center">Thou art blessed, you have <u>unlimited</u> storage on gitern</h2>
+            {{else}}
+                <h2 class="text-center">There is a problem with your payment method, please update your payment method</h2>
+            {{end}}
+            <h4 class="text-center font-weight-normal"><strong>{{.accname}}</strong> currently has {{.pubkeys}} pubkey{{if (gt .pubkeys 1)}}s{{end}}</h4>
+            <div class="container">
+                <form id="manage-form" method="post" action="/billing-portal">
+                    <button type="submit">MANAGE BILLING</button>
+                </form>
+            </div>
+        </div>
+        <div class="unpaid {{if .StripeStatus}}hidden{{end}}">
+            <h3 class="text-center">Most noble user, get unlimited storage on gitern for $5/pubkey/month.</h3>
+            <h4 class="text-center font-weight-normal"><strong>{{.accname}}</strong> currently has {{.pubkeys}} pubkey{{if (gt .pubkeys 1)}}s{{end}}</h4>
+            <div class="container">
+                <form id="payment-form">
+                    <div id="card-element" class="MyCardElement">
+                        <!-- Elements will create input elements here -->
+                    </div>
+
+                    <!-- We'll put the error messages in this element -->
+                    <div id="card-element-errors" role="alert"></div>
+                    <button type="submit">
+                        <div class="">
+                            <div id="loading" class="hidden">SUBSCRIBING...</div>
+                            <span id="button-text" class="">SUBSCRIBE</span>
+                        </div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <div class="footer">
+            <h3>I'm a real person. I <strong>love</strong> hearing from users. Contact me about <u><strong>anything</strong></u>.</h3>
+            <div>
+                <img src="/public/me2.jpg">
+                <div><a href="mailto:keyan@gitern.com">keyan@gitern.com</a><div>
+                <div><a href="tel:+15303412103">530-341-2103</a><div>
+                <div><a href="http://twitter.com/giternhackers">@giternhackers</a></div>
+            </div>
+    </div>
+</body>
+
+<script>
+    let stripe, customer, price, card;
+
+    function stripeElements(publishableKey) {
+        stripe = Stripe(publishableKey);
+
+        if (document.getElementById('card-element')) {
+            var elements = stripe.elements();
+            // Set up Stripe.js and Elements to use in checkout form
+            var style = {
+                base: {
+                    color: "#32325d",
+                    fontFamily: "monospace",
+                    fontSmoothing: "antialiased",
+                    fontSize: "16px",
+                    "::placeholder": {
+                        color: "#aab7c4"
+                    }
+                },
+                invalid: {
+                    color: "#fa755a",
+                    iconColor: "#fa755a"
+                }
+            };
+
+            var card = elements.create("card", {
+                style: style
+            });
+            card.mount("#card-element");
+
+            card.on('focus', function() {
+                let el = document.getElementById('card-element-errors');
+                el.classList.add('focused');
+            });
+
+            card.on('blur', function() {
+                let el = document.getElementById('card-element-errors');
+                el.classList.remove('focused');
+            });
+
+            card.on('change', function(event) {
+                displayError(event);
+            });
+        }
+
+        let paymentForm = document.getElementById('payment-form');
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', function(evt) {
+                evt.preventDefault();
+                changeLoadingState(true);
+
+                // If a previous payment was attempted, get the lastest invoice
+                const latestInvoicePaymentIntentStatus = localStorage.getItem(
+                    'latestInvoicePaymentIntentStatus'
+                );
+
+                if (latestInvoicePaymentIntentStatus === 'requires_payment_method') {
+                    const invoiceId = localStorage.getItem('latestInvoiceId');
+                    const isPaymentRetry = true;
+                    // create new payment method & retry payment on invoice with new payment method
+                    createPaymentMethod({
+                        card,
+                        isPaymentRetry,
+                        invoiceId,
+                    });
+                } else {
+                    // create new payment method & create subscription
+                    createPaymentMethod({
+                        card
+                    });
+                }
+            });
+        }
+    }
+
+    function displayError(event) {
+        changeLoadingState(false);
+        let displayError = document.getElementById('card-element-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    }
+
+    function createPaymentMethod({
+        card,
+        isPaymentRetry,
+        invoiceId
+    }) {
+        const customerId = {{.StripeID}};
+        let priceId = {{.STRIPE_PRICE_ID}};
+
+        stripe
+            .createPaymentMethod({
+                type: 'card',
+                card: card,
+            })
+            .then((result) => {
+                if (result.error) {
+                    displayError(result.error);
+                } else {
+                    if (isPaymentRetry) {
+                        // Update the payment method and retry invoice payment
+                        retryInvoiceWithNewPaymentMethod(
+                            customerId,
+                            result.paymentMethod.id,
+                            invoiceId,
+                            priceId
+                        );
+                    } else {
+                        // Create the subscription
+                        createSubscription(customerId, result.paymentMethod.id, priceId);
+                    }
+                }
+            });
+    }
+
+    function handleCardSetupRequired({
+        subscription,
+        invoice,
+        priceId,
+        paymentMethodId
+    }) {
+        let setupIntent = subscription.pending_setup_intent;
+
+        if (setupIntent && setupIntent.status === 'requires_action') {
+            return stripe
+                .confirmCardSetup(setupIntent.client_secret, {
+                    payment_method: paymentMethodId,
+                })
+                .then((result) => {
+                    if (result.error) {
+                        // start code flow to handle updating the payment details
+                        // Display error message in your UI.
+                        // The card was declined (i.e. insufficient funds, card has expired, etc)
+                        throw result;
+                    } else {
+                        if (result.setupIntent.status === 'succeeded') {
+                            // There's a risk of the customer closing the window before callback
+                            // execution. To handle this case, set up a webhook endpoint and
+                            // listen to setup_intent.succeeded.
+                            return {
+                                priceId: priceId,
+                                subscription: subscription,
+                                invoice: invoice,
+                                paymentMethodId: paymentMethodId,
+                            };
+                        }
+                    }
+                });
+        } else {
+            // No customer action needed
+            return {
+                subscription,
+                priceId,
+                paymentMethodId
+            };
+        }
+    }
+
+
+    function handlePaymentThatRequiresCustomerAction({
+        subscription,
+        invoice,
+        priceId,
+        paymentMethodId,
+        isRetry,
+    }) {
+        // If it's a first payment attempt, the payment intent is on the subscription latest invoice.
+        // If it's a retry, the payment intent will be on the invoice itself.
+        let paymentIntent = invoice ?
+            invoice.payment_intent :
+            subscription.latest_invoice.payment_intent;
+
+        if (!paymentIntent)
+            return {
+                subscription,
+                priceId,
+                paymentMethodId
+            };
+
+        if (
+            paymentIntent.status === 'requires_action' ||
+            (isRetry === true && paymentIntent.status === 'requires_payment_method')
+        ) {
+            return stripe
+                .confirmCardPayment(paymentIntent.client_secret, {
+                    payment_method: paymentMethodId,
+                })
+                .then((result) => {
+                    if (result.error) {
+                        // start code flow to handle updating the payment details
+                        // Display error message in your UI.
+                        // The card was declined (i.e. insufficient funds, card has expired, etc)
+                        throw result;
+                    } else {
+                        if (result.paymentIntent.status === 'succeeded') {
+                            // There's a risk of the customer closing the window before callback
+                            // execution. To handle this case, set up a webhook endpoint and
+                            // listen to invoice.paid. This webhook endpoint returns an Invoice.
+                            return {
+                                priceId: priceId,
+                                subscription: subscription,
+                                invoice: invoice,
+                                paymentMethodId: paymentMethodId,
+                            };
+                        }
+                    }
+                });
+        } else {
+            // No customer action needed
+            return {
+                subscription,
+                priceId,
+                paymentMethodId
+            };
+        }
+    }
+
+    function handleRequiresPaymentMethod({
+        subscription,
+        paymentMethodId,
+        priceId,
+    }) {
+        if (subscription.status === 'active') {
+            // subscription is active, no customer actions required.
+            return {
+                subscription,
+                priceId,
+                paymentMethodId
+            };
+        } else if (
+            subscription.latest_invoice.payment_intent.status ===
+            'requires_payment_method'
+        ) {
+            // Using localStorage to store the state of the retry here
+            // (feel free to replace with what you prefer)
+            // Store the latest invoice ID and status
+            localStorage.setItem('latestInvoiceId', subscription.latest_invoice.id);
+            localStorage.setItem(
+                'latestInvoicePaymentIntentStatus',
+                subscription.latest_invoice.payment_intent.status
+            );
+            throw {
+                error: {
+                    message: 'Your card was declined.'
+                }
+            };
+        } else {
+            return {
+                subscription,
+                priceId,
+                paymentMethodId
+            };
+        }
+    }
+
+    function onSubscriptionComplete(result) {
+        console.log(result, new Date().getTime());
+        // Payment was successful. Provision access to your service.
+        // Remove invoice from localstorage because payment is now complete.
+        clearCache();
+        // Change your UI to show a success message to your customer.
+        document.querySelector('.paid').classList.remove('hidden');
+        document.querySelector('.unpaid').classList.add('hidden');
+        // Call your backend to grant access to your service based on
+        // the product your customer subscribed to.
+        // Get the product by using result.subscription.price.product
+    }
+
+    function createSubscription(customerId, paymentMethodId, priceId) {
+        return (
+            fetch('/create-subscription', {
+                method: 'post',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify({
+                    customerId: customerId,
+                    paymentMethodId: paymentMethodId,
+                    priceId: priceId,
+                }),
+            })
+            .then((response) => {
+                return response.json();
+            })
+            // If the card is declined, display an error to the user.
+            .then((result) => {
+                console.log("result", result)
+                if (result.error) {
+                    // The card had an error when trying to attach it to a customer
+                    throw result;
+                }
+                return result;
+            })
+            // Normalize the result to contain the object returned
+            // by Stripe. Add the addional details we need.
+            .then((result) => {
+                return {
+                    // Use the Stripe 'object' property on the
+                    // returned result to understand what object is returned.
+                    subscription: result,
+                    paymentMethodId: paymentMethodId,
+                    priceId: priceId,
+                };
+            })
+            // Some payment methods require a customer to do additional
+            // authentication with their financial institution.
+            // Eg: 2FA for cards.
+            .then(handleCardSetupRequired)
+            .then(handlePaymentThatRequiresCustomerAction)
+            // If attaching this card to a Customer object succeeds,
+            // but attempts to charge the customer fail. You will
+            // get a requires_payment_method error.
+            .then(handleRequiresPaymentMethod)
+            // No more actions required. Provision your service for the user.
+            .then(onSubscriptionComplete)
+            .catch((error) => {
+                // An error has happened. Display the failure to the user here.
+                // We utilize the HTML element we created.
+                displayError(error);
+            })
+        );
+    }
+
+    function retryInvoiceWithNewPaymentMethod(
+        customerId,
+        paymentMethodId,
+        invoiceId,
+        priceId
+    ) {
+        return (
+            fetch('/retry-invoice', {
+                method: 'post',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify({
+                    customerId: customerId,
+                    paymentMethodId: paymentMethodId,
+                    invoiceId: invoiceId,
+                }),
+            })
+            .then((response) => {
+                return response.json();
+            })
+            // If the card is declined, display an error to the user.
+            .then((result) => {
+                if (result.error) {
+                    // The card had an error when trying to attach it to a customer
+                    throw result;
+                }
+                return result;
+            })
+            // Normalize the result to contain the object returned
+            // by Stripe. Add the addional details we need.
+            .then((result) => {
+                return {
+                    // Use the Stripe 'object' property on the
+                    // returned result to understand what object is returned.
+                    invoice: result,
+                    paymentMethodId: paymentMethodId,
+                    priceId: priceId,
+                    isRetry: true,
+                };
+            })
+            // Some payment methods require a customer to be on session
+            // to complete the payment process. Check the status of the
+            // payment intent to handle these actions.
+            .then(handlePaymentThatRequiresCustomerAction)
+            // No more actions required. Provision your service for the user.
+            .then(onSubscriptionComplete)
+            .catch((error) => {
+                // An error has happened. Display the failure to the user here.
+                // We utilize the HTML element we created.
+                displayError(error);
+            })
+        );
+    }
+
+    stripeElements({{.STRIPE_PUBLISHABLE_KEY}});
+
+    // Show a spinner on subscription submission
+    function changeLoadingState(isLoading) {
+        if (isLoading) {
+            document.querySelector('#button-text').classList.add('hidden');
+            document.querySelector('#loading').classList.remove('hidden');
+        } else {
+            document.querySelector('#button-text').classList.remove('hidden');
+            document.querySelector('#loading').classList.add('hidden');
+        }
+    }
+
+    function clearCache() {
+        localStorage.clear();
+    }
+</script>
+
+</html>

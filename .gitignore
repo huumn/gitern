@@ -1,0 +1,16 @@
+*.db
+.env
+tmp
+bin
+.env
+
+.DS_Store
+
+# jwt
+*.key
+*.pub
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

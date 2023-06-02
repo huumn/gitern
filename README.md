@@ -1,0 +1,27 @@
+This is the source for gitern.com ... in summary it's
+1. a multitenant git host
+2. that uses ssh keys for auth exclusively
+3. has a command-line ui
+
+I'm sharing it hoping it might be able to help someone build a git host on nostr. This isn't particularly relevant to be honest but does
+1. have novel auth and
+2. is very minimal
+
+I will one day describe more about how it works (especially if someone bothers to ask), but this gist is:
+- lots of SSHD hacks
+- users are progressively chroot/jailed into isolated parts of the filesytem upon authentication with different sets of commands available
+
+As a starting point, this is where auth begins (this is from the sshd config):
+
+```txt
+    Match User git
+        AuthorizedKeysCommand /usr/bin/gitern-authorized-keys %f %t %k
+        AuthorizedKeysCommandUser authorized-keys-command
+        ForceCommand gitern-intake
+        AcceptEnv none
+        ChrootDirectory /jail
+```
+
+They then get forced through `gitern-intake` whose source is `/cmd/intake/intake.go`.
+
+That should be enough for someone curious to start. Huzzah!

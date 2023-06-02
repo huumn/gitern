@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>gitern is a git host for hackers</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="muh lord, gitern is a git host for hackers. ssh keys are your auth. no email or password required. repos are private by default. the cli is the ui. huzzah!"/>
+    <meta name="robots" content="index, follow"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="gitern is a git host for hackers"/>
+    <meta property="og:description" content="ssh keys are your auth. no email or password required. repos are private by default. the cli is the ui. huzzah!"/>
+    <meta property="og:image" content="https://gitern.com/public/gitern_knot_blw.png"/>
+    <meta property="og:url" content="https://gitern.com"/>
+    <meta property="og:site_name" content="gitern"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/public/gitern_knot.png"/>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-168219183-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-168219183-1');
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+      function onSubmit(token) {
+        document.getElementById("hero-form").submit();
+      }
+    </script>
+    <style>
+      html, body {
+          height: 100%;
+          margin: 0;
+        }
+      @media screen {
+          html, body {
+              height: 100vh;
+          }
+      }
+      body {
+        font-family: monospace;
+      }
+      #heading {
+        margin: 8px;
+        margin-bottom: 0px;
+      }
+      #heading hr {
+        border: 0;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        height: 5px;
+        margin-left: 68px;
+      }
+      #heading img {
+        position: relative;
+        float: left;
+        left: 0;
+        top: 0;
+        height: 60px;
+        width: 60px;
+      }
+      .panel {
+        width: 100%;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .hero {
+        margin: 0px 1rem 0px 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        flex: 1;
+      }
+      .hero-inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        flex: 1;
+      }
+      .input-group {
+        margin: 20px 0px 20px 0px;
+      }
+      textarea {
+        max-width: 100%;
+        width: 98%;
+      }
+      .huzzah {
+        padding: .6rem;
+      }
+      video {
+        max-width: 100%;
+        max-height: 600px;
+      }
+      .demo-background {
+        background: #640b3e;
+        color: #fff;
+      }
+      .justify-center {
+        justify-content: center;
+      }
+      .align-center {
+        align-items: center;
+      }
+      .text-center {
+        text-align: center;
+      }
+      .not-for {
+        margin: 0 1rem;
+      }
+      .not-for li {
+        margin-bottom: 10px;
+        font-size: 1.17em;
+      }
+      .image-parent img {
+        width: 100%;
+        height: auto;
+      }
+      .grid .image-parent {
+        width: 50%;
+        height: auto;
+        max-width: 250px;
+        max-height: 399px;
+        margin-top: 8px;
+        vertical-align: middle;
+      }
+      .grid {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .section {
+        margin-bottom: 8rem;
+        margin-top: 5rem;
+        display: flex;
+        flex-direction: column;
+      }
+      .commands-background {
+        border-radius: 25px;
+        background: #43B3AE;
+        padding: 1rem;
+        padding-bottom: 2rem;
+      }
+      .commands-subtext {
+        color: #f7f7e7;
+        font-size: 75%;
+      }
+      input, textarea, select, button {
+        font-family:inherit;
+      }
+      .me img {
+        max-width:75px;
+        max-height:75px;
+        margin: 0 1rem;
+      }
+      .me {
+        display: flex;
+      }
+      .footer {
+        margin-top: 5rem;
+        padding: 3rem 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        background: #FADA5E;
+        flex-wrap: wrap-reverse;
+      }
+      .footer .contact {
+        margin-bottom: 2rem;
+      }
+      .footer h3 {
+        margin: 0;
+        margin-bottom: 5px;
+      }
+      .grecaptcha-badge {
+        visibility: hidden;
+      }
+      .text-muted {
+        color: #6c757d;
+      }
+
+      .flip-card {
+        background-color: transparent;
+        perspective: 1000px; /* Remove this if you don't want the 3D effect */
+      }
+
+      /* This container is needed to position the front and back side */
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+      }
+
+      /* Do an horizontal flip when you move the mouse over the flip box container */
+      .flip-card:hover .flip-card-inner, .flip-card:active .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+
+      /* Position the front and back side */
+      .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden; /* Safari */
+        backface-visibility: hidden;
+      }
+
+      /* Style the front side (fallback if image is missing) */
+      .flip-card-front {
+        position: relative;
+        color: black;
+      }
+
+      /* Style the back side */
+      .flip-card-back {
+        position: absolute;
+        top: 0;
+        color: white;
+        transform: rotateY(180deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel">
+      <div id="heading">
+        <img src="/public/gitern_knot.png">
+        <hr>
+        <hr>
+        <hr>
+        <hr>
+      </div>
+      <div class="hero">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <h1>muh lord, gitern is a git host for hackers</h1>
+            <h2>SSH keys are your auth (nay email or password required)</h2>
+            <h3>the cli is the ui</h3>
+            <h4>all repos are private by default</h4>
+            <h4>25MB of hosting for free then just $5/pubkey/month after that</h4>
+          </div>
+          <form id="hero-form" action="/join" method="post">
+            <div class="input-group">
+              <input id="accname" name="accname" type="text" placeholder="account name" required
+                oninput="document.getElementById('path').innerHTML = document.getElementById('accname').value"
+                pattern="(?=.{1,40}$)(?![-_])(?!.*[-_]{2})[a-zA-Z0-9-]+(?<![-_])">
+              <div>
+                <small>Repo paths start with your account name, e.g.  <span id="path">{account name}</span>/path/to/a/repo.git</small>
+              </div>
+            </div>
+            <div class="input-group">
+              <textarea name="pubkey" type="text" placeholder="ssh pubkey" rows="10" cols="50" required></textarea>
+              <div>
+                <small>SSH pubkeys are typically stored in ~/.ssh with the .pub extension</small>
+              </div>
+            </div>
+            <div>
+              {{if isDev}}
+                <button class="huzzah" type="submit">Huzzah!</button>
+              {{else}}
+                <button class="g-recaptcha huzzah" data-sitekey="6LdtQLIZAAAAAJvHYik2lnZpES1oprNfhh2N_JPu" data-callback='onSubmit'>Huzzah!</button>
+              {{end}}
+              <br/>
+            </div>
+          </form>
+          <small class="text-muted">This site is protected by reCAPTCHA and the Google
+            <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+            <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="section justify-center demo-background">
+      <h2 class="text-center">video demo</h2>
+      <video autoplay loop muted controls playsinline>
+        <source src="/public/demo3.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="section justify-center align-center">
+      <div class="not-for">
+        <h1>Hark now, gitern is <strong>NOT</strong> for you if:</h1>
+        <ul>
+          <li>you don't program for fun anymore</li>
+          <li>you need an SLA (we'll do our best though)</li>
+          <li>you need more than a few key features initially</li>
+          <li>you lovvvvve using enterprise software</li>
+          <li>thou've stopped believing in magic</li>
+        </ul>
+      </div>
+    </div>
+    <div id="commands" class="section commands-background">
+      <h2 class="text-center">commands
+        <div class="commands-subtext">hover or tap card to reveal ssh api</div>
+      </h2>
+      <div class="grid justify-center">
+        <div class="flip-card image-parent">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="/public/create.png" alt="gitern create">
+            </div>
+            <div class="flip-card-back">
+              <img src="/public/create_back2.png" alt="gitern create ssh api">
+            </div>
+          </div>
+        </div>
+        <div class="flip-card image-parent">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="/public/delete.png" alt="gitern delete">
+            </div>
+            <div class="flip-card-back">
+              <img src="/public/delete_back.png" alt="gitern delete ssh api">
+            </div>
+          </div>
+        </div>
+        <div class="flip-card image-parent">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="/public/list.png" alt="gitern list">
+            </div>
+            <div class="flip-card-back">
+              <img src="/public/list_back.png" alt="gitern list ssh api">
+            </div>
+          </div>
+        </div>
+        <div class="flip-card image-parent">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="/public/pubkey_add.png" alt="gitern pubkey:add">
+            </div>
+            <div class="flip-card-back">
+              <img src="/public/pubkey_add_back.png" alt="gitern pubkey:add ssh api">
+            </div>
+          </div>
+        </div>
+        <div class="flip-card image-parent">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="/public/pubkey_remove.png" alt="gitern pubkey:remove">
+            </div>
+            <div class="flip-card-back">
+              <img src="/public/pubkey_remove_back.png" alt="gitern pubkey:remove ssh api">
+            </div>
+          </div>
+        </div>
+        <div class="flip-card image-parent">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="/public/pubkey_list.png" alt="gitern pubkey:list">
+            </div>
+            <div class="flip-card-back">
+              <img src="/public/pubkey_list_back2.png" alt="gitern pubkey:list ssh api">
+            </div>
+          </div>
+        </div>
+        <div class="flip-card image-parent">
+          <div class="flip-card-inner">
+              <div class="flip-card-front">
+              <img src="/public/account.png" alt="gitern account">
+              </div>
+              <div class="flip-card-back">
+              <img src="/public/account_back.png" alt="gitern account ssh api">
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="downloads" class="section align-center">
+      <h2 class="text-center">downloads</h2>
+      <ul>
+        <li>Main CLI (recommended)
+          <ul>
+            <li>Installers
+              <ul>
+                <li><a href="https://files.gitern.com/gitern.pkg">macOS</a></li>
+                <li><a href="https://files.gitern.com/gitern-x64.exe">Windows 64-bit</a></li>
+                <li><a href="https://files.gitern.com/gitern-x86.exe">Windows 32-bit</a></li>
+              </ul>
+            </li>
+
+            <li>Tarballs
+              <ul>
+                <li><a href="https://files.gitern.com/gitern-darwin-x64.tar.gz">macOS</a></li>
+                <li><a href="https://files.gitern.com/gitern-linux-x64.tar.gz">linux x64</a></li>
+                <li><a href="https://files.gitern.com/gitern-linux-arm.tar.gz">linux arm</a></li>
+                <li><a href="https://files.gitern.com/gitern-x64.exe">Windows 64-bit</a></li>
+                <li><a href="https://files.gitern.com/gitern-x86.exe">Windows 32-bit</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>Shell script CLI
+          <ul>
+            <li><a href="https://files.gitern.com/gitern">POSIX shell</a></li>
+          </ul>
+        </li>
+        <li>E2E encryption remote helper
+          <ul>
+            <li><a href="https://github.com/huumn/git-remote-gitern">git-remote-gitern</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="footer">
+      <div class="me">
+        <img src="/public/me.jpg">
+        <div>
+          <div>Well met!</div>
+          <div>I'm making gitern</div>
+          <div><a href="http://keyankousha.com">keyankousha.com</a></div>
+          <div><a href="http://twitter.com/k00bideh">@k00bideh</a></div>
+        </div>
+      </div>
+      <div class="contact">
+        <h3>Contact us</h3>
+        <div><a href="mailto:keyan@gitern.com">keyan@gitern.com</a><div>
+        <div><a href="tel:+15303412103">530-341-2103</a><div>
+        <div><a href="http://twitter.com/giternhackers">@giternhackers</a></div>
+      </div>
+    </div>
+  </body>
+</html>

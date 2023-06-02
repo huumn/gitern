@@ -1,0 +1,1 @@
+make: ./build-web.sh
