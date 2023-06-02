@@ -1,7 +1,7 @@
-This is the source for gitern.com ... in summary it's
+This is the source for https://gitern.com ... in summary it's
 1. a multitenant git host
 2. that uses ssh keys for auth exclusively
-3. has a command-line ui
+3. and has a command-line ui
 
 I'm sharing it hoping it might be able to help someone build a git host on nostr. This isn't particularly relevant to be honest but does
 1. have novel auth and
