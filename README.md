@@ -25,3 +25,9 @@ As a starting point, this is where auth begins (this is from the sshd config):
 They then get forced through `gitern-intake` whose source is `/cmd/intake/intake.go`.
 
 That should be enough for someone curious to start. Huzzah!
+
+Extra credit
+---------------
+I also wrote a remote helper for gitern that end to end encrypts git repos: https://github.com/huumn/git-remote-gitern ... It's pretty inefficient and naive but it kind of shows how you might do something ***really freaking weird*** with git that runs exclusively on the client (no special git server required).
+
+
